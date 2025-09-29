@@ -1,11 +1,13 @@
 package android.jade.calculodemedia;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         btnCalcular.setOnClickListener(view->{
             validaCampos();
-            calculoMedia();
-            resultado.setText("Você clicou no botão Calcular");
-                });
+            if(!(validaCampos())){
+                calculoMedia();
+            }else{
+                Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            }
+        });
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -69,20 +74,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void validaCampos() {
-        if (TextUtils.isEmpty(nota1.getText())){
-            // O campo está vazio ou contém apenas espaços em branco
-            // Ex: Exiba uma mensagem de erro para o usuário
-            nota1.setError("Este campo não pode estar vazio");
-        } else if (TextUtils.isEmpty(nota2.getText())) {
-            nota2.setError("Este campo não pode estar vazio");
-        } else if (TextUtils.isEmpty(nota3.getText())) {
-            nota3.setError("Este campo não pode estar vazio");
-        } else if (TextUtils.isEmpty(nota4.getText())) {
-            nota4.setError("Este campo não pode estar vazio");
-        }
+    private boolean validaCampos() {
+        return nota1.getText().toString().isEmpty()
+                && nota2.getText().toString().isEmpty()
+                && nota3.getText().toString().isEmpty()
+                && nota4.getText().toString().isEmpty();
     }
 
+    @SuppressLint("WrongViewCast")
     private void initComponents() {
         nota1        = findViewById(R.id.nota1);
         nota2        = findViewById(R.id.nota2);
